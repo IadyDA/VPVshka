@@ -45,7 +45,7 @@ apelsin_mg = apelsin_g * 1000
 
 names = ['Медный', 'Серебро', 'Факи чемпион', 'Апельсин']
 data_series = [medny_mg, serebro_mg, faki_mg, apelsin_mg]
-colors = ['#CD7F32', '#708090', '#0055A4', '#FF9F43']
+colors = ['brown', 'gray', 'blue', 'orange']
 
 
 def calculate_r2(y_true, y_pred):
@@ -105,7 +105,7 @@ for mass, name in zip(data_series, names):
     results[name] = analyze_linearized(time_s, mass, name, m_final_mg)
 
 # ============================================================
-# ОКНО 1: Экспоненциальное насыщение (4 графика 2x2)
+# ОКНО 1: Экспоненциальное насыщение (4 графика 2x2) - В ГРАММАХ
 # ============================================================
 fig1, axes1 = plt.subplots(2, 2, figsize=(14, 10))
 axes1 = axes1.flatten()
@@ -116,16 +116,18 @@ for i, (mass, name, color) in enumerate(zip(data_series, names, colors)):
     delta_m_0 = results[name]['delta_m_0']
     m_final = results[name]['m_final']
 
-    ax.scatter(time_min, mass, c=color, alpha=0.7, label='Эксперимент', s=50, zorder=5, edgecolors='black',
+    # Переводим в граммы для отображения
+    ax.scatter(time_min, mass / 1000, c=color, alpha=0.7, label='Эксперимент', s=50, zorder=5, edgecolors='black',
                linewidth=0.5)
 
     t_fit_min = np.linspace(time_min.min(), time_min.max(), 500)
     t_fit_s = t_fit_min * 60
     y_fit = m_final - delta_m_0 * np.exp(-k * t_fit_s)
-    ax.plot(t_fit_min, y_fit, '-', c=color, linewidth=2.5, label=f'Аппроксимация\nR²={results[name]["r2_mass"]:.4f}')
+    ax.plot(t_fit_min, y_fit / 1000, '-', c=color, linewidth=2.5,
+            label=f'Аппроксимация\nR²={results[name]["r2_mass"]:.4f}')
 
     ax.set_xlabel('Время, мин', fontsize=11)
-    ax.set_ylabel('Масса, мг', fontsize=11)
+    ax.set_ylabel('Масса, г', fontsize=11)  # Изменили на граммы
     ax.set_title(f'{name}', fontsize=12, fontweight='bold')
     ax.legend(fontsize=9)
     ax.grid(True, alpha=0.3)
@@ -203,7 +205,7 @@ plt.tight_layout()
 plt.show()
 
 # ============================================================
-# ОКНО 4: Сводный график насыщения (все шарики)
+# ОКНО 4: Сводный график насыщения (все шарики) - В ГРАММАХ
 # ============================================================
 fig4, ax4 = plt.subplots(figsize=(12, 8))
 
@@ -212,16 +214,17 @@ for mass, name, color in zip(data_series, names, colors):
     delta_m_0 = results[name]['delta_m_0']
     m_final = results[name]['m_final']
 
-    ax4.scatter(time_min, mass, c=color, alpha=0.6, label=f'{name} (эксп.)', s=40, zorder=5, edgecolors='black',
+    # Переводим в граммы для отображения
+    ax4.scatter(time_min, mass / 1000, c=color, alpha=0.6, label=f'{name} (эксп.)', s=40, zorder=5, edgecolors='black',
                 linewidth=0.5)
 
     t_fit_min = np.linspace(time_min.min(), time_min.max(), 500)
     t_fit_s = t_fit_min * 60
     y_fit = m_final - delta_m_0 * np.exp(-k * t_fit_s)
-    ax4.plot(t_fit_min, y_fit, '-', c=color, linewidth=2.5, label=f'{name} (аппрок.)', alpha=0.8)
+    ax4.plot(t_fit_min, y_fit / 1000, '-', c=color, linewidth=2.5, label=f'{name} (аппрок.)', alpha=0.8)
 
 ax4.set_xlabel('Время, мин', fontsize=12)
-ax4.set_ylabel('Масса, мг', fontsize=12)
+ax4.set_ylabel('Масса, г', fontsize=12)  # Изменили на граммы
 ax4.set_title('Все шарики: Экспоненциальное насыщение', fontsize=14, fontweight='bold')
 ax4.legend(fontsize=10)
 ax4.grid(True, alpha=0.3)
@@ -245,7 +248,7 @@ for name, color in zip(names, colors):
 
 ax5.set_xlabel('Время, мин', fontsize=12)
 ax5.set_ylabel('dm/dt, мг/с', fontsize=12)
-ax5.set_title('Все шарики: Производная массы', fontsize=14, fontweight='bold')
+ax5.set_title('Все шарики: Скорость сдувания', fontsize=14, fontweight='bold')
 ax5.legend(fontsize=10)
 ax5.grid(True, alpha=0.3)
 plt.tight_layout()
@@ -292,7 +295,7 @@ for name in names:
     tau = results[name]['tau']
     r2_lin = results[name]['r2_linear']
     r2_mass = results[name]['r2_mass']
-    print(f"{name:<15} {k:<20.6f} {k_err:<15.6f} {tau / 60:<12.1f} {r2_lin:<12.6f} {r2_mass:<12.6f}")
+    print(f"{name:<15} {k:<20.8f} {k_err:<15.8f} {tau / 60:<12.1f} {r2_lin:<12.6f} {r2_mass:<12.6f}")
 
 print("\n" + "=" * 100)
 print("МЕТОД ОПРЕДЕЛЕНИЯ k:")
