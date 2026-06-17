@@ -85,10 +85,10 @@ mass_holod_g = np.array([
 ])
 # Предельные массы (г)  масса груза + масса оболочки
 m_final_g = {
-    'Малый': 27.7,
-    'Средний': 28.6,
-    'Большой': 28.2,
-    'Холодный': 23.9
+    'Медный': 27.7,
+    'Серебряный': 28.6,
+    'Факи Чемпион': 28.2,
+    'Апельсин': 23.9
 }
 
 # Перевод: часы → секунды, граммы → миллиграммы
@@ -102,10 +102,11 @@ mass_sred_mg = mass_sred_g * 1000
 mass_bolsh_mg = mass_bolsh_g * 1000
 mass_holod_mg = mass_holod_g * 1000
 
-# names = ['Малый', 'Средний', 'Большой', 'Холодный']
+#names = ['Малый', 'Средний', 'Большой', 'Холодный']
+#colors = ['#CD7F32', '#708090', '#0055A4', '#FF9F43']
 # data_series = [mass_maly_mg, mass_sred_mg, mass_bolsh_mg, mass_holod_mg]
 # time_series = [time_maly_s, time_sred_s, time_bolsh_s, time_holod_s]
-# colors = ['#CD7F32', '#708090', '#0055A4', '#FF9F43']
+
 
 k_maly = np.log( (m_final_g['Малый'] - mass_maly_g[0]) / (m_final_g['Малый'] - mass_maly_g[1:]) ) / time_maly_s[1:]
 k_sred = np.log( (m_final_g['Средний'] - mass_sred_g[0]) / (m_final_g['Средний'] - mass_sred_g[1:]) ) / time_sred_s[1:]
