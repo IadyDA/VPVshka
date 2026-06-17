@@ -193,7 +193,7 @@ for i, (mass, time_s, time_ch, name, color) in enumerate(zip(data_series, time_s
     t_fit_s = t_fit_ch * 3600
     derivative_analytic = delta_m_0 * k * np.exp(-k * t_fit_s)
     ax.plot(t_fit_ch, derivative_analytic, '-', c=color, linewidth=2.5,
-            label=f'dm/dt = {delta_m_0 * k:.2f}·exp(-{format_k_scientific(k)}·t)')
+            label=f'dm/dt = {delta_m_0 * k:.3f}·exp(-{format_k_scientific(k)}·t)')
 
     avg_derivative = np.mean(derivative_exp)
     ax.axhline(y=avg_derivative, color=color, linestyle='--', linewidth=1.5, alpha=0.5,
@@ -286,7 +286,7 @@ for name, color in zip(names, colors):
     t_fit_s = t_fit_ch * 3600
     derivative = delta_m_0 * k * np.exp(-k * t_fit_s)
     ax5.plot(t_fit_ch, derivative, '-', c=color, linewidth=2.5,
-             label=f'{name}: {delta_m_0 * k:.2f}·exp(-{format_k_scientific(k)}·t)', alpha=0.8)
+             label=f'{name}: {delta_m_0 * k:.3f}·exp(-{format_k_scientific(k)}·t)', alpha=0.8)
 
 ax5.set_xlabel('Время, ч', fontsize=12)
 ax5.set_ylabel('dm/dt, мг/с', fontsize=12)
