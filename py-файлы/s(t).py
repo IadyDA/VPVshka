@@ -12,7 +12,9 @@ rcParams['legend.fontsize'] = 10
 rcParams['figure.dpi'] = 150
 
 # === ДАННЫЕ ===
-time = np.array([0, 87, 140, 233, 386])  # минуты
+time_mins = np.array([0, 87, 140, 233, 386])  # минуты
+time = time_mins / 60.0                        # перевод в ЧАСЫ
+
 
 # Площадь поверхности в см² (из ваших расчётов)
 areas = {
@@ -100,36 +102,98 @@ print("=" * 70)
 fig, ax = plt.subplots(figsize=(10, 6))
 
 for name, area in areas.items():
-    k, b, _, _, _ = results[name]['k'], results[name]['b'], None, None, None
-    k, b, dk, db, r2 = results[name]['k'], results[name]['b'], results[name]['dk'], results[name]['db'], results[name][
-        'r2']
+    res = results[name]
+    k, b, dk, db, r2 = res['k'], res['b'], res['dk'], res['db'], res['r2']
 
-    # Точки с погрешностями
+    k_ch = k/60
+    dk_ch = dk/60
+
+    # Точки с погрешностями (убрали label, чтобы не дублировать в легенде)
     ax.errorbar(time, area, yerr=errors[name], fmt='o', color=colors[name],
-                label=name, capsize=4, markersize=6, linewidth=1.5, alpha=0.9)
+                capsize=4, markersize=6, linewidth=1.5, alpha=0.9)
 
-    # Линия регрессии (плавная)
+    # Текст для легенды с формулой S(t) в формате LaTeX
+    # Используем k и b с округлением до нужного количества знаков
+    legend_label = f"{name}: $S(t) = {b:.0f} {k_ch:.2f} \\cdot t$"
+
+    # Линия регрессии (добавлен label с уравнением)
     t_fit = np.linspace(time.min(), time.max(), 100)
     s_fit = k * t_fit + b
-    ax.plot(t_fit, s_fit, '-', color=colors[name], linewidth=2, alpha=0.8)
+    ax.plot(t_fit, s_fit, '-', color=colors[name], linewidth=2, alpha=0.8,
+            label=legend_label)
 
 # Оформление
-ax.set_xlabel('Время, мин', fontsize=12)
+ax.set_xlabel('Время, ч', fontsize=12)
 ax.set_ylabel('Площадь поверхности, см²', fontsize=12)
 ax.set_title('Зависимость площади поверхности шариков от времени', fontsize=14, pad=20)
 ax.grid(True, linestyle='--', alpha=0.4)
-ax.legend(frameon=True, fancybox=True, shadow=False)
+
+# Размещаем легенду (можно настроить положение через loc)
+ax.legend(frameon=True, fancybox=True, shadow=False, loc='upper right')
 ax.set_axisbelow(True)
 
 plt.tight_layout()
 plt.show()
 
-# === ДОПОЛНИТЕЛЬНО: проверка линейности через остатки ===
-print("\n🔍 АНАЛИЗ ОСТАТКОВ (проверка линейности):")
-for name, area in areas.items():
-    k, b, _, _, r2 = results[name]['k'], results[name]['b'], None, None, results[name]['r2']
-    residuals = area - (k * time + b)
-    max_res = np.max(np.abs(residuals))
-    mean_area = np.mean(area)
-    print(f"{name:15s}: макс. отклонение от прямой = {max_res:.1f} см² "
-          f"({max_res / mean_area * 100:.2f}% от среднего значения)")
+
+# Вспомогательная функция для замены точек на запятые (для русскоязычных ODS)
+def to_ods(value, digits=2):
+    return f"{value:.{digits}f}".replace('.', ',')
+
+
+# === ВЫВОД ПЛОСКОЙ ТАБЛИЦЫ ЗНАЧЕНИЙ S ДЛЯ ODS ===
+print("\n" + "=" * 90)
+print(" ТАБЛИЦА ВСЕХ ЗНАЧЕНИЙ S ДЛЯ СКОПИРОВАНИЯ В ODS")
+print("=" * 90)
+# Шапка таблицы (разделение через табуляцию)
+print("Шарик\tВремя (мин)\tВремя (ч)\tS эксп. (см²)\tПогрешность dS (см²)\tS теор. (см²)")
+
+for name, area_list in areas.items():
+    k = results[name]['k']
+    b = results[name]['b']
+
+    for i in range(len(time)):
+        t_m = time_mins[i]
+        t_h = time[i]
+        s_exp = area_list[i]
+        ds = errors[name][i]
+        s_theory = k * t_h + b  # Расчетное значение по графику регрессии
+
+        row = [
+            name,
+            str(t_m),
+            to_ods(t_h, 4),
+            to_ods(s_exp, 2),
+            to_ods(ds, 2),
+            to_ods(s_theory, 2)
+        ]
+        print("\t".join(row))
+print("=" * 90 + "\n")
+
+# # === ГРАФИК ===
+# fig, ax = plt.subplots(figsize=(10, 6))
+#
+# for name, area in areas.items():
+#     k, b, _, _, _ = results[name]['k'], results[name]['b'], None, None, None
+#     k, b, dk, db, r2 = results[name]['k'], results[name]['b'], results[name]['dk'], results[name]['db'], results[name][
+#         'r2']
+#
+#     # Точки с погрешностями
+#     ax.errorbar(time, area, yerr=errors[name], fmt='o', color=colors[name],
+#                 label=name, capsize=4, markersize=6, linewidth=1.5, alpha=0.9)
+#
+#     # Линия регрессии (плавная)
+#     t_fit = np.linspace(time.min(), time.max(), 100)
+#     s_fit = k * t_fit + b
+#     ax.plot(t_fit, s_fit, '-', color=colors[name], linewidth=2, alpha=0.8)
+#
+# # Оформление
+# ax.set_xlabel('Время, мин', fontsize=12)
+# ax.set_ylabel('Площадь поверхности, см²', fontsize=12)
+# ax.set_title('Зависимость площади поверхности шариков от времени', fontsize=14, pad=20)
+# ax.grid(True, linestyle='--', alpha=0.4)
+# ax.legend(frameon=True, fancybox=True, shadow=False)
+# ax.set_axisbelow(True)
+#
+# plt.tight_layout()
+# plt.show()

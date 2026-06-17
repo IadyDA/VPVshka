@@ -23,7 +23,7 @@ time_maly_ch = np.array([
     2.25, 2.333, 2.433, 2.5, 2.55, 2.633, 2.7, 2.767, 2.867, 2.933,
     3.0, 3.067, 3.183, 3.267, 3.367, 3.433, 3.5, 3.583, 3.65, 3.783,
     3.85, 4.05, 4.15, 4.583, 4.75, 5.183, 5.233, 5.583, 5.917, 6.2,
-    6.717, 15.567, 19.767
+    6.717
 ])
 mass_maly_g = np.array([
     12.7, 12.9, 13.7, 13.9, 14.0, 14.2, 14.3, 14.4, 14.5, 14.6,
@@ -31,7 +31,7 @@ mass_maly_g = np.array([
     15.7, 15.8, 15.9, 16.0, 16.1, 16.2, 16.3, 16.4, 16.5, 16.6,
     16.7, 16.8, 16.8, 16.9, 17.0, 17.0, 17.1, 17.2, 17.3, 17.4,
     17.5, 17.6, 17.8, 18.3, 18.3, 18.8, 18.8, 19.1, 19.3, 19.5,
-    19.9, 23.8, 25.0
+    19.9
 ])
 
 # Серебро
@@ -58,7 +58,7 @@ time_bolsh_ch = np.array([
     2.25, 2.333, 2.433, 2.5, 2.55, 2.633, 2.7, 2.767, 2.867, 2.933,
     3.0, 3.067, 3.183, 3.267, 3.367, 3.433, 3.5, 3.583, 3.65, 3.783,
     3.85, 4.05, 4.15, 4.583, 4.75, 5.183, 5.233, 5.583, 5.917, 6.2,
-    6.717, 15.567
+    6.717
 ])
 mass_bolsh_g = np.array([
     16.1, 16.3, 17.0, 17.1, 17.1, 17.4, 17.5, 17.5, 17.5, 17.6,
@@ -66,7 +66,7 @@ mass_bolsh_g = np.array([
     18.5, 18.6, 18.7, 18.7, 18.8, 18.9, 19.0, 19.1, 19.1, 19.2,
     19.2, 19.3, 19.5, 19.6, 19.7, 19.7, 19.7, 19.8, 19.9, 19.9,
     20.1, 20.2, 20.2, 20.8, 20.8, 21.1, 21.2, 21.4, 21.5, 21.8,
-    22.0, 25.5
+    22.0
 ])
 # Апельсин
 time_holod_ch = np.array([
@@ -187,10 +187,10 @@ fig, axes = plt.subplots(2, 2, figsize=(12, 10))
 axes = axes.flatten()
 
 datasets = [
-    (time_maly_ch, mass_maly_g, m_final_g['Малый'], 'Малый', colors_light[0], colors_dark[0]),
-    (time_sred_ch, mass_sred_g, m_final_g['Средний'], 'Средний', colors_light[1], colors_dark[1]),
-    (time_bolsh_ch, mass_bolsh_g, m_final_g['Большой'], 'Большой', colors_light[2], colors_dark[2]),
-    (time_holod_ch, mass_holod_g, m_final_g['Холодный'], 'Холодный', colors_light[3], colors_dark[3])
+    (time_maly_ch, mass_maly_g, m_final_g['Малый'], 'Медь', colors_light[0], colors_dark[0]),
+    (time_sred_ch, mass_sred_g, m_final_g['Средний'], 'Серебро', colors_light[1], colors_dark[1]),
+    (time_bolsh_ch, mass_bolsh_g, m_final_g['Большой'], 'Факи чемпион', colors_light[2], colors_dark[2]),
+    (time_holod_ch, mass_holod_g, m_final_g['Холодный'], 'Апельсин', colors_light[3], colors_dark[3])
 ]
 
 for i, (time, mass, m_inf, name, c_light, c_dark) in enumerate(datasets):
