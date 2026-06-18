@@ -4,7 +4,7 @@ from scipy.interpolate import PchipInterpolator
 from scipy.integrate import quad
 
 # === НАСТРОЙКИ ===
-IMAGE_PATH = 'se00.jpg'  # Путь к вашему фото
+IMAGE_PATH = 'nnn.jpg'  # Путь к вашему фото
 RULER_LENGTH_M = 0.20       # 20 см в метрах
 
 print("📸 Загрузка изображения...")
