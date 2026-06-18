@@ -71,6 +71,31 @@ for _, row in df.iterrows():
         f"{row['d_delta_mkm']}"
     )
 
+import matplotlib.pyplot as plt
+
+# Настройка фигуры
+plt.figure(figsize=(8, 5))
+
+# Отрисовка графиков с планками погрешностей (Error Bars)
+for name, group in df.groupby("Шарик"):
+    plt.errorbar(
+        group["Время"],
+        group["delta_mkm"],
+        yerr=group["d_delta_mkm"],
+        label=name,
+        fmt='-o',
+        capsize=4
+    )
+
+# Оформление осей
+plt.xlabel("Время t (ч)", fontsize=11)
+plt.ylabel("Толщина delta (мкм)", fontsize=11)
+plt.title("Зависимость delta(t) с погрешностями", fontsize=13, fontweight='bold')
+plt.grid(True, linestyle='--', alpha=0.7)
+plt.legend()
+plt.show()
+
+
 # =========================================================================
 
 # 1. Новые исходные данные с картинки
