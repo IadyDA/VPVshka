@@ -342,7 +342,7 @@ for name in names:
     r2_lin = results[name]['r2_linear']
     r2_mass = results[name]['r2_mass']
     print(
-        f"{name:<12} {format_k_scientific(k):<25} {k_err:<15.8f} {tau / 3600:<12.2f} {tau / 60:<10.1f} {r2_lin:<12.6f} {r2_mass:<12.6f}")
+        f"{name:<12} {format_k_scientific(k):<25} {k_err:<15.9f} {tau / 3600:<12.2f} {tau / 60:<10.1f} {r2_lin:<12.6f} {r2_mass:<12.6f}")
 
 print("\n" + "=" * 110)
 print("МЕТОД ОПРЕДЕЛЕНИЯ k:")
