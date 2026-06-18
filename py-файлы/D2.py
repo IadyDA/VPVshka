@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
+import matplotlib.ticker as ticker
 
 # === НАСТРОЙКИ ГРАФИКА (компактные) ===
 rcParams['font.family'] = 'DejaVu Sans'
@@ -9,12 +10,12 @@ rcParams['axes.labelsize'] = 10
 rcParams['axes.titlesize'] = 11
 rcParams['legend.fontsize'] = 8
 rcParams['figure.dpi'] = 120
+rcParams['mathtext.fontset'] = 'dejavusans'
 
 # === ФИЗИЧЕСКИЕ КОНСТАНТЫ ===
 P_0_mmHg = 742
 P_0_Pa = P_0_mmHg * 133.322
 T = 298
-T4 = 269
 R = 8.314
 mu_air = 28.97e-3
 mu_He = 4.00e-3
@@ -217,10 +218,16 @@ for name in ['Малый', 'Средний', 'Большой', 'Холодный
 
 # Оформление графика согласно вашему компактному стилю
 plt.xlabel('Время эксперимента, ч')
-plt.ylabel(r'Коэффициент диффузии $D$, $\text{см}^2/\text{с}$')
+plt.ylabel(r'Коэффициент диффузии $D$, $10^{-8} \text{см}^2/\text{с}$')
 plt.title('Зависимость коэффициента диффузии $D$ от времени')
 plt.grid(True, linestyle='--', alpha=0.5)
 plt.legend(loc='best')
+
+# === Убираем экспоненту и форматируем числа ===
+ax = plt.gca()
+# Умножаем реальные значения (например, 1.5e-8) на 10^8, чтобы на оси выводилось просто "1.5"
+ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda x, pos: f'{x * 1e8:.1f}'))
+
 
 plt.tight_layout()
 plt.show()
